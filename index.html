@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hassan's Robux Balance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Hassan's Robux Balance</h1>
+  <div id="balance">Loading...</div>
+
+  <h2>Store</h2>
+  <ul id="store"></ul>
+
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKg-MhwzbFMjFw3lAzZRSa4G0sJrKuCEc",
+    authDomain: "hassan-robux-store.firebaseapp.com",
+    projectId: "hassan-robux-store",
+    storageBucket: "hassan-robux-store.firebasestorage.app",
+    messagingSenderId: "611842301968",
+    appId: "1:611842301968:web:a23f9df4b04083a1aaaa95",
+    measurementId: "G-1R12W3V8P8"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
