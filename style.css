@@ -38,6 +38,7 @@ ul#store li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 button {
@@ -48,8 +49,21 @@ button {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  margin-top: 10px;
 }
 
 button:hover {
   background: #45a049;
+}
+
+/* 🔥 Responsive adjustments for small screens */
+@media (max-width: 500px) {
+  ul#store li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  button {
+    width: 100%;
+  }
 }
