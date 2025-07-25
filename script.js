@@ -34,7 +34,7 @@ function loadStoreItems() {
 
         const buyButton = document.createElement('button');
         buyButton.textContent = `Buy for ${data.price} Robux`;
-        buyButton.onclick = () => purchaseItem(doc.id, data.name, data.price);
+        buyButton.onclick = () => purchaseItem(data.name, data.price);
 
         itemDiv.appendChild(buyButton);
         storeDiv.appendChild(itemDiv);
@@ -47,7 +47,7 @@ function loadStoreItems() {
 }
 
 // ✅ Purchase item function
-function purchaseItem(itemId, itemName, itemPrice) {
+function purchaseItem(itemName, itemPrice) {
   const userRef = db.collection('users').doc('hassan');
 
   db.runTransaction(async (transaction) => {
@@ -69,21 +69,17 @@ function purchaseItem(itemId, itemName, itemPrice) {
       balance: currentBalance - itemPrice
     });
 
-    // ✅ Save purchase history in purchases subcollection
-    db.collection('users').doc('hassan').collection('purchases').add({
+    // ✅ Save purchase history in purchases subcollection with proper fields
+    return db.collection('users').doc('hassan').collection('purchases').add({
       itemName: itemName,
       itemPrice: itemPrice,
       purchaseDate: firebase.firestore.FieldValue.serverTimestamp()
-    })
-    .then(() => {
-      alert(`Purchase successful: ${itemName} for ${itemPrice} Robux`);
-    })
-    .catch((error) => {
-      console.error("Error saving purchase:", error);
-      alert("Purchase recorded failed.");
     });
-
-  }).catch(error => {
+  })
+  .then(() => {
+    alert(`Purchase successful: ${itemName} for ${itemPrice} Robux`);
+  })
+  .catch(error => {
     console.error("Transaction failed: ", error);
     alert("Purchase failed. Try again.");
   });
