@@ -1,16 +1,4 @@
-// ✅ Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyBKg-MhwzbFMjFw3lAzZRSa4G0sJrKuCEc",
-  authDomain: "hassan-robux-store.firebaseapp.com",
-  projectId: "hassan-robux-store",
-  storageBucket: "hassan-robux-store.firebasestorage.app",
-  messagingSenderId: "611842301968",
-  appId: "1:611842301968:web:a23f9df4b04083a1aaaa95",
-  measurementId: "G-1R12W3V8P8"
-};
-
-// ✅ Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// ✅ Initialize Firestore
 const db = firebase.firestore();
 
 // ✅ Display Hassan's balance
