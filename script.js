@@ -1,4 +1,4 @@
-// ✅ Your Firebase config
+// ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBKg-MhwzbFMjFw3lAzZRSa4G0sJrKuCEc",
   authDomain: "hassan-robux-store.firebaseapp.com",
@@ -13,33 +13,54 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-console.log("Firebase initialized:", firebase);
+// ✅ Display Hassan's balance
+function loadBalance() {
+  const balanceEl = document.getElementById('balance');
 
-// ✅ Fetch Hassan's balance in real time
-db.collection('users').doc('hassan').onSnapshot(doc => {
-  if (doc.exists) {
-    document.getElementById('balance').innerText = doc.data().balance + " Robux";
-  } else {
-    document.getElementById('balance').innerText = "No balance found.";
-  }
-});
-
-console.log("Fetching store items...");
-db.collection('storeItems').onSnapshot(snapshot => {
-  let storeList = document.getElementById('store');
-  storeList.innerHTML = "";
-  snapshot.forEach(doc => {
-    let data = doc.data();
-    let li = document.createElement('li');
-    li.innerHTML = `${data.name} - ${data.price} Robux <button onclick="buyItem('${doc.id}', ${data.price})">Buy</button>`;
-    storeList.appendChild(li);
+  db.collection('users').doc('hassan').onSnapshot(doc => {
+    if (doc.exists) {
+      balanceEl.textContent = doc.data().balance + " Robux";
+    } else {
+      balanceEl.textContent = "No balance found.";
+    }
   });
-});
+}
 
+// ✅ Fetch and display store items
+function loadStoreItems() {
+  const storeDiv = document.getElementById('store');
+  storeDiv.innerHTML = "Loading store items...";
 
-// ✅ Purchase function
-function buyItem(itemId, price) {
-  let userRef = db.collection('users').doc('hassan');
+  db.collection('storeItems').get()
+    .then(snapshot => {
+      storeDiv.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = "store-item";
+        itemDiv.innerHTML = `
+          <h3>${data.name}</h3>
+          <p>${data.price} Robux</p>
+        `;
+
+        const buyButton = document.createElement('button');
+        buyButton.textContent = `Buy for ${data.price} Robux`;
+        buyButton.onclick = () => purchaseItem(doc.id, data.name, data.price);
+
+        itemDiv.appendChild(buyButton);
+        storeDiv.appendChild(itemDiv);
+      });
+    })
+    .catch(error => {
+      console.error("Error loading store items:", error);
+      storeDiv.innerHTML = "Failed to load store.";
+    });
+}
+
+// ✅ Purchase item function
+function purchaseItem(itemId, itemName, itemPrice) {
+  const userRef = db.collection('users').doc('hassan');
 
   db.runTransaction(async (transaction) => {
     const doc = await transaction.get(userRef);
@@ -48,15 +69,40 @@ function buyItem(itemId, price) {
       return;
     }
 
-    let currentBalance = doc.data().balance;
+    let currentBalance = doc.data().balance || 0;
 
-    if (currentBalance >= price) {
-      transaction.update(userRef, { balance: currentBalance - price });
-      alert("Purchase successful!");
-    } else {
-      alert("Not enough Robux.");
+    if (currentBalance < itemPrice) {
+      alert("Not enough Robux!");
+      return;
     }
+
+    // ✅ Deduct balance
+    transaction.update(userRef, {
+      balance: currentBalance - itemPrice
+    });
+
+    // ✅ Save purchase history in purchases subcollection
+    db.collection('users').doc('hassan').collection('purchases').add({
+      itemName: itemName,
+      itemPrice: itemPrice,
+      purchaseDate: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      alert(`Purchase successful: ${itemName} for ${itemPrice} Robux`);
+    })
+    .catch((error) => {
+      console.error("Error saving purchase:", error);
+      alert("Purchase recorded failed.");
+    });
+
   }).catch(error => {
-    console.log("Transaction failed: ", error);
+    console.error("Transaction failed: ", error);
+    alert("Purchase failed. Try again.");
   });
 }
+
+// ✅ Initialize everything on page load
+window.onload = () => {
+  loadBalance();
+  loadStoreItems();
+};
