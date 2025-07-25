@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hassan's Robux Balance</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hassan Robux Store</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Hassan's Robux Balance</h1>
-  <div id="balance">Loading...</div>
 
-  <h2>Store</h2>
-  <ul id="store"></ul>
+  <h1>Welcome to Hassan's Robux Store</h1>
 
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  <div>
+    <h2>Your Balance:</h2>
+    <p id="balance">Loading...</p>
+  </div>
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKg-MhwzbFMjFw3lAzZRSa4G0sJrKuCEc",
-    authDomain: "hassan-robux-store.firebaseapp.com",
-    projectId: "hassan-robux-store",
-    storageBucket: "hassan-robux-store.firebasestorage.app",
-    messagingSenderId: "611842301968",
-    appId: "1:611842301968:web:a23f9df4b04083a1aaaa95",
-    measurementId: "G-1R12W3V8P8"
-  };
+  <div>
+    <h2>Store</h2>
+    <div id="store">Loading store...</div>
+  </div>
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+  <!-- ✅ Firebase scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="script.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- ✅ Your Firebase config & app initialization -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBKg-MhwzbFMjFw3lAzZRSa4G0sJrKuCEc",
+      authDomain: "hassan-robux-store.firebaseapp.com",
+      projectId: "hassan-robux-store",
+      storageBucket: "hassan-robux-store.firebasestorage.app",
+      messagingSenderId: "611842301968",
+      appId: "1:611842301968:web:a23f9df4b04083a1aaaa95",
+      measurementId: "G-1R12W3V8P8"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <!-- ✅ Your script -->
+  <script src="script.js"></script>
+
 </body>
 </html>
